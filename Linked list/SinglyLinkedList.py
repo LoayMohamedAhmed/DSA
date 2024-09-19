@@ -32,12 +32,14 @@ class SLinkedList:
         if pos ==0:
             new_node.next = self.head
             self.head = new_node
+            self.size+=1
             return True
         current_node = self.head
         for i in range(1,pos):
             current_node = current_node.next
         new_node.next = current_node.next
         current_node.next = new_node
+        self.size+=1
         return True
 
         
@@ -62,17 +64,20 @@ class SLinkedList:
     def delet_val(self,val):
         if self.head.data == val:
             self.head = self.head.next
+            self.size-=1
             return True
         current_node = self.head.next
         prv_node = self.head
         while current_node != None:
             if current_node.data == val:
                 prv_node.next = current_node.next
+                self.size-=1
                 return True
             prv_node = current_node
             current_node =current_node.next
         return False
 
+'''''
 L_list = SLinkedList()
 L_list.add(5)
 L_list.add(6)
@@ -82,3 +87,4 @@ L_list.insert(3,3)
 L_list.delet_val(1)
 L_list.print()
 print(L_list.lowest_val())
+'''
