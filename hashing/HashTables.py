@@ -1,7 +1,7 @@
 class Hash_tabel:
 
     def __init__(self):
-        self.hash_tabel = [[],[],[],[],[],[],[],[],[],[]]
+        self.hash_tabel = [[]  for i in range(10)]
     
     def hash_function(self, element):
         ch_sum = 0
@@ -14,7 +14,7 @@ class Hash_tabel:
         if element not in self.hash_tabel[indx]:
             self.hash_tabel[indx].append(element)
 
-    def serch(self, element):
+    def search(self, element):
         indx =self.hash_function(element)
         for itr , item in enumerate(self.hash_tabel[indx]):
             if element == item:
@@ -22,18 +22,19 @@ class Hash_tabel:
         return False, -1, -1
 
     def delete(self , element):
-        ret ,indx, pos = self.serch(element)
+        ret ,indx, pos = self.search(element)
         if ret:
             self.hash_tabel[indx].pop(pos)
-            return True
-        return False
+            print("deleted successfully")
+        else:
+            print("elemnet not exisit")
     
 hashTabel = Hash_tabel()
 hashTabel.insert("loay")
 hashTabel.insert("bob")
 hashTabel.insert("bob")
 hashTabel.insert("alice")
-print(hashTabel.serch("bob")[0])
+print(hashTabel.search("bob")[0])
 hashTabel.delete("bob")
-print(hashTabel.serch("loay")[0])
-print(hashTabel.serch("bob")[0])
+print(hashTabel.search("loay")[0])
+print(hashTabel.search("bob")[0])
