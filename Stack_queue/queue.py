@@ -23,7 +23,7 @@ class Queue:
     def peek(self):
         if not self.is_empty():
             return self.Queue[0]
-
+'''''
 queue = Queue()
 queue.enqueue(5)
 queue.enqueue(6)
@@ -36,3 +36,4 @@ queue.dequeue()
 print(queue.peek())
 queue.dequeue()
 print(queue.peek())
+'''
