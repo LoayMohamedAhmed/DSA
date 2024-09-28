@@ -2,17 +2,19 @@ class BinarySearch:
     # implementation with loop
     def Search2(self,array, value):
         left =0
-        right = len(array)
+        right = len(array)-1
         while left <= right:
             mid = (left+ right)//2
             if array[mid] == value:
                 break
             elif array[mid] > value:
                 right = mid-1
+                mid =-1
             else:
                 left = mid+1
-        if left > right:
-            mid = -1
+                mid =-1
+        #if left > right:
+        #   mid = -1
         return mid
 
     # implementation with recursion
@@ -35,6 +37,6 @@ class BinarySearch:
     
 binarySearch = BinarySearch()
 unsorted_array = [ 2, 3, 7, 7, 11, 15, 25]
-index = binarySearch.Search2(unsorted_array,11)
+index = binarySearch.Search2(unsorted_array,25)
 
 print(index)
