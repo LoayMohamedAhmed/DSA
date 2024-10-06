@@ -71,11 +71,14 @@ class AVL_tree:
             node.l_child.r_child = node
             node = node.l_child
             node.r_child.l_child =right_childern
+            self.cal_height(node , r_type)
         elif r_type == "RR":
             left_children = node.r_child.l_child
             node.r_child.l_child = node
             node = node.r_child
             node.l_child.r_child = left_children
+            self.cal_height(node , r_type)
+        
         elif r_type == "LR":
             # left child is right heavy needs a single left rotation
             node.l_child = self.rotation(node.l_child , "RR")
@@ -85,14 +88,23 @@ class AVL_tree:
             node.r_child = self.rotation(node.r_child , "LL")
             node = self.rotation(node , "RR")
         return node
+    
+    # calculate height for the rotated node and it's left/right child
+    # update BF for the rotated nodes
+    def cal_height(self, node , r_type):
+        if r_type == "LL":
+            RL_node = node.r_child
+        else:
+            RL_node = node.l_child
+        RL_node.height = max(self.get_height(RL_node.l_child),self.get_height(RL_node.r_child)) + 1
+        RL_node.BF = self.get_height(RL_node.r_child) - self.get_height(RL_node.l_child)
 
-    def height(self, node):
-        if node is None:
+        node.height = max(self.get_height(node.l_child),self.get_height(node.r_child)) + 1
+        node.BF = self.get_height(node.r_child) - self.get_height(node.l_child)
+    
+    def get_height(self , node):
+        if not node:
             return -1
-        l_height = self.height(node.l_child)
-        r_height = self.height(node.r_child)
-        node.height = max(l_height , r_height)+1
-        node.BF = r_height - l_height
         return node.height
     
     # construct an un-balanced binary serch tree
@@ -100,31 +112,21 @@ class AVL_tree:
         # check the existance of the root node
         if self.root == None:
             self.root = Node(data)
-            return self.root , None
+            return self.root
         # base case
         if node is None:
-            return Node(data) , 0
+            return Node(data)
         
-        # initiat the node right and left subtrees height
-        # check if the left and right chiderns are exist 
-        if node.l_child is not None:
-            l_height = node.l_child.height
-        else:
-            # return -1 as the node doen't have a child 
-            l_height = -1
-        if node.r_child is not None:
-            r_height = node.r_child.height
-        else:
-            # return -1 as the node doen't have a child 
-            r_height = -1
-    
+       
         if node.data >= data:
-           node.l_child , l_height = self.add(data,node.l_child)
-                 
+            node.l_child = self.add(data,node.l_child)        
         else:
-           node.r_child  , r_height = self.add(data,node.r_child)
-        
-        
+           node.r_child = self.add(data,node.r_child)
+
+        # get the height of the right and left subtrees
+        r_height = self.get_height(node.r_child)
+        l_height = self.get_height(node.l_child)
+
         #get the node height based on the right and left subtrees height
         node.height =max(l_height , r_height) +1
         node.BF = r_height - l_height
@@ -132,10 +134,7 @@ class AVL_tree:
             #print(node.data)
             rot_type = self.BF_type(node)
             node = self.rotation(node , rot_type)
-            node.height = self.height(node)
-            #print(rot_type)
-
-        return node , node.height
+        return node
                 
     #find the lowest value
     def lowest_value(self, node):
@@ -198,7 +197,7 @@ class AVL_tree:
 avl_tree = AVL_tree()
 #values = [37,23,46,4,24,38,50,9,32]
 for i in range(10):
-   avl_tree.root ,_ = avl_tree.add(i, avl_tree.root)
+   avl_tree.root= avl_tree.add(i, avl_tree.root)
 print("BFS........")
 avl_tree.BFS()
 print("DFS........")
