@@ -66,13 +66,13 @@ class AVL_tree:
     def rotation(self , node ,r_type):
         # node: un-balanced node
         # rtype is: the rotation type
-        if r_type == "LL":
+        if r_type == "LL" or r_type =="L":
             right_childern = node.l_child.r_child
             node.l_child.r_child = node
             node = node.l_child
             node.r_child.l_child =right_childern
             self.cal_height(node , r_type)
-        elif r_type == "RR":
+        elif r_type == "RR" or r_type == "R":
             left_children = node.r_child.l_child
             node.r_child.l_child = node
             node = node.r_child
@@ -92,7 +92,7 @@ class AVL_tree:
     # calculate height for the rotated node and it's left/right child
     # update BF for the rotated nodes
     def cal_height(self, node , r_type):
-        if r_type == "LL":
+        if r_type == "LL" or r_type == "L":
             RL_node = node.r_child
         else:
             RL_node = node.l_child
@@ -142,6 +142,21 @@ class AVL_tree:
             return node
         return self.lowest_value(node.l_child)
     
+    def retracing(self , node):
+        if node is None:
+            return None
+        node.l_child = self.retracing(node.l_child)
+        node.r_child = self.retracing(node.r_child)
+        r_height = self.get_height(node.r_child)
+        l_height = self.get_height(node.l_child)
+        node.height =max(l_height , r_height) +1
+        node.BF = r_height - l_height
+        if not -1 <=node.BF <=1:
+            rot_type = self.BF_type(node)
+            #print(node.data)
+            node = self.rotation(node , rot_type)
+        return node
+
     def delete(self,data,node):
         # base case to return if the node is not found
         if node is None:
@@ -158,7 +173,8 @@ class AVL_tree:
                 self.root = self.root.r_child
             else:
                 self.root = self.root.l_child
-            return
+            self.root = self.retracing(self.root)
+            return 
         # start searching for target value
         if node.data > data:
             node.l_child = self.delete(data, node.l_child)
@@ -172,6 +188,7 @@ class AVL_tree:
                 node = node.r_child
             else:
                 node = node.l_child
+            node = self.retracing(node)
         return node
     
     # implement breadth fist search
@@ -196,13 +213,17 @@ class AVL_tree:
             
 avl_tree = AVL_tree()
 #values = [37,23,46,4,24,38,50,9,32]
-for i in range(10):
+for i in range(12):
    avl_tree.root= avl_tree.add(i, avl_tree.root)
 print("BFS........")
 avl_tree.BFS()
 print("DFS........")
 avl_tree.DFS_in_order(avl_tree.root)
-value = 25
-print("search for "+str(value)+" ......")
-print(avl_tree.BST_search(value , avl_tree.root))
-print("lowest value is "+ str(avl_tree.lowest_value(avl_tree.root).data))
+#value = 25
+#print("search for "+str(value)+" ......")
+#print(avl_tree.BST_search(value , avl_tree.root))
+#print("lowest value is "+ str(avl_tree.lowest_value(avl_tree.root).data))
+avl_tree.delete(3,avl_tree.root)
+print("BFS........")
+avl_tree.BFS()
+
