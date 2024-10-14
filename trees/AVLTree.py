@@ -49,17 +49,15 @@ class AVL_tree:
         else:
             r_type += 'L'
         # get the second letter of the rotation type  based on the banalnce factor of the child node
-        # check the existance of both left and right nodes
-        if node.l_child is not None:
-            if node.l_child.BF > 0:
-                r_type += 'R'
-            elif node.l_child.BF < 0:
-                r_type += 'L'
-        if node.r_child is not None:
-            if node.r_child.BF > 0:
-                r_type += 'R'
-            elif node.r_child.BF < 0:
-                r_type += 'L'
+        if r_type == 'R':
+            temp_node = node.r_child
+        elif r_type == 'L':
+            temp_node = node.l_child
+        if temp_node.BF >0:
+            r_type+='R'
+        elif temp_node.BF <0:
+            r_type += 'L'
+        
         return r_type
     
     # method for rotation to retore the balance of the un-balanced node
@@ -223,7 +221,7 @@ avl_tree.DFS_in_order(avl_tree.root)
 #print("search for "+str(value)+" ......")
 #print(avl_tree.BST_search(value , avl_tree.root))
 #print("lowest value is "+ str(avl_tree.lowest_value(avl_tree.root).data))
-avl_tree.delete(3,avl_tree.root)
+avl_tree.delete(0,avl_tree.root)
 print("BFS........")
 avl_tree.BFS()
 
