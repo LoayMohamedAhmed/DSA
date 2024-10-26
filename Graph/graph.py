@@ -1,5 +1,6 @@
 import sys
 import os
+import numpy as np
 sys.path.insert(0,os.path.abspath(os.path.join(os.path.dirname(__file__),'..')))
 from Stack_queue import queue
 class vertex:
@@ -17,10 +18,12 @@ class Graph:
         self.weighted = weighted
     
     def change_size(self):
-        temp = [[0]*self.size for _ in range(self.size)]
-        if len(self.adj_matrix)!=0:
-            temp[:][:self.size] = self.adj_matrix
-        self.adj_matrix = temp
+        if len(self.adj_matrix) ==0:
+            self.adj_matrix = [[0]*self.size for _ in range(self.size)]
+        else:
+            for row in self.adj_matrix:
+                row.append(0)
+            self.adj_matrix.append([0]*self.size)
 
     def serch_data(self, v1 , v2 = None):
         # initialize the indexes with -1
@@ -115,22 +118,22 @@ class Graph:
         return
         
 
-graph = Graph(False, False)
+graph = Graph(True, False)
 graph.add_verex('A')
 graph.add_verex('B')
 graph.add_verex('C')
 graph.add_verex('D')
 graph.add_verex('E')
 graph.add_verex('F')
-graph.add_verex('G')
 graph.add_edge('E','A')
 graph.add_edge('D','A')
 graph.add_edge('A','C')
-graph.add_edge('B','C')
-graph.add_edge('F','B')
+graph.add_edge('C','B')
+graph.add_edge('B','F')
+graph.add_verex('G')
 graph.add_edge('C','G')
 graph.add_edge('C','E')
-graph.add_edge('C','F')
-graph.add_edge('D','E')
+#graph.add_edge('C','F')
+#graph.add_edge('D','E')
 graph.cycle_detection_DFS(3)
 #print(graph.adj_matrix)
