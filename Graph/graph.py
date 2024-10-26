@@ -98,9 +98,24 @@ class Graph:
                     bfs_queue.enqueue(vertecies[i])
                     visited.append(vertecies[i])
 
+    def cycle_detection_DFS(self, index, parent = None, visited=[] , cycles = []):
+        vertecies = list(self.vertecies.keys())
+        visited.append(vertecies[index])
+        cycles.append(vertecies[index])
+        for i , neighbour in enumerate(self.adj_matrix[index]):
+            if neighbour>0:
+                if vertecies[i]!= parent:
+                    if vertecies[i] in visited:
+                        if vertecies[i] in cycles:
+                            cycle = ''.join(cycles[cycles.index(vertecies[i]):])
+                            print(f"ther's a cycle: {cycle}")
+                    else:
+                        self.cycle_detection_DFS(i ,vertecies[index] ,visited, cycles)
+                        cycles = cycles[:cycles.index(vertecies[index])+1]
+        return
+        
 
-
-graph = Graph(True , False)
+graph = Graph(False, False)
 graph.add_verex('A')
 graph.add_verex('B')
 graph.add_verex('C')
@@ -117,5 +132,5 @@ graph.add_edge('C','G')
 graph.add_edge('C','E')
 graph.add_edge('C','F')
 graph.add_edge('D','E')
-graph.DFS(3)
+graph.cycle_detection_DFS(3)
 #print(graph.adj_matrix)
