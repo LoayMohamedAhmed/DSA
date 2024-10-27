@@ -116,9 +116,37 @@ class Graph:
                         self.cycle_detection_DFS(i ,vertecies[index] ,visited, cycles)
                         cycles = cycles[:cycles.index(vertecies[index])+1]
         return
+    
+    # implement cycle detection with union find
+    def find(self , v_idx , subsets):
+        # the parent root has index equal to its value
+        if subsets[v_idx] == v_idx:
+            return v_idx
+        return self.find(subsets[v_idx],subsets)
+    
+    
+    def cycle_detection_UF(self):
+        # define the roots of each vertex in the graph
+        parents = [i for i in range(self.size)]
+        
+        # loop over the edges of the graph
+        for i in range(self.size):
+            for j in range(i , self.size):
+                if self.adj_matrix[i][j]>0:
+                    # get the roots of both verticies
+                    v1_root= self.find(i,parents)
+                    v2_root= self.find(j,parents)
+                    # if the two roots are the same then cycle detected
+                    if v1_root == v2_root:
+                        print("cycle detected")
+                        return
+                    else:
+                        # merge the two subset by change the root of the second subset to be the same as the first one
+                        parents[v2_root] = v1_root
+
         
 
-graph = Graph(True, False)
+graph = Graph(False, False)
 graph.add_verex('A')
 graph.add_verex('B')
 graph.add_verex('C')
@@ -133,7 +161,8 @@ graph.add_edge('B','F')
 graph.add_verex('G')
 graph.add_edge('C','G')
 graph.add_edge('C','E')
-#graph.add_edge('C','F')
-#graph.add_edge('D','E')
+graph.add_edge('C','F')
+graph.add_edge('D','E')
 graph.cycle_detection_DFS(3)
+graph.cycle_detection_UF()
 #print(graph.adj_matrix)
