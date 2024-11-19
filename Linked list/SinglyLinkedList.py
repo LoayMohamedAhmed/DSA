@@ -11,11 +11,11 @@ class SLinkedList:
         self.size = 0
 
     def add(self,data):
-        if self.head== None:
+        if self.size== 0:
             node = Node(data)
             self.head = node
             self.tail = self.head
-        elif self.head == self.tail:
+        elif self.size== 1:
             node = Node(data)
             self.head.next = node
             self.tail = node
